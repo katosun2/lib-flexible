@@ -45,7 +45,7 @@ module.exports = function(grunt) {
                     src: ['*.debug.js'],
                     dest: '<%= distPath %>',
                     ext: '.js'
-                }]
+				}]
             }
         },
 
@@ -128,7 +128,19 @@ module.exports = function(grunt) {
                 },
                 dest: '<%= distPath%>/combo.js'
             }
-        }
+		},
+
+		concat: {
+			main: {
+				options: {
+					separator: '',
+				},
+				files: {
+					'<%= distPath%>/lib-flexible-<%= pkg.version %>.js': ['<%= distPath %>/flexible_css.js', '<%= distPath %>/flexible.js'],
+					'<%= distPath%>/lib-flexible-<%= pkg.version %>.debug.js': ['<%= distPath %>/flexible_css.debug.js', '<%= distPath %>/flexible.debug.js'],
+				}
+			}
+		}
     });
 
     grunt.loadNpmTasks('grunt-depconcat');
@@ -140,8 +152,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('dist', ['clean', 'copy', 'depconcat', 'less', 'cssmin', 'css2js', 'uglify', 'depcombo']);
+    grunt.registerTask('dist', ['clean', 'copy', 'depconcat', 'less', 'cssmin', 'css2js', 'uglify', 'depcombo', 'concat']);
     grunt.registerTask('dev', ['watch']);
 
     grunt.registerTask('default', ['dist']);
